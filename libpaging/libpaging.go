@@ -12,13 +12,19 @@ type PagingContext struct {
 	PageURL map[int]string
 }
 
-func Default() Paging {
-	return Paging{
+var defaultPaging Paging
+
+func init() {
+	defaultPaging = Paging{
 		PagingBtnNum:        5,
 		PageNoPlaceholder:   "$pageNo$",
 		PageSizePlaceholder: "$pageSize$",
 		DefaultPageSize:     10,
 	}
+}
+
+func Default() Paging {
+	return defaultPaging
 }
 
 type Paging struct {
@@ -27,6 +33,10 @@ type Paging struct {
 	PageSizePlaceholder string
 	PagingURL           string
 	DefaultPageSize     int
+}
+
+func SQLHelper(pageNo, pageSize int) (limit, offset int) {
+	return defaultPaging.SQLHelper(pageNo, pageSize)
 }
 
 func (p Paging) SQLHelper(pageNo, pageSize int) (limit, offset int) {
